@@ -3,17 +3,21 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _Code.GameScene
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(SpriteRenderer))]
     public sealed class Ball : MonoBehaviour
     {
         private const float DESTROY_ANIMATION_DURATION = 0.2f;
-        [field: SerializeField] public Rigidbody2D Rigidbody { get; private set; }
+        [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
         
         public EBallState State { get; private set; }
 
+        private BallSOData _type;
         private CancellationTokenSource _cancellationToken = new();
 
         public void ChangeState(EBallState state)
@@ -33,7 +37,7 @@ namespace _Code.GameScene
         private void Release()
         {
             transform.parent = null;
-            Rigidbody.bodyType = RigidbodyType2D.Dynamic;
+            _rigidbody.bodyType = RigidbodyType2D.Dynamic;
         }
 
         public async UniTaskVoid StartDestroyTimer(float delayTime)
@@ -54,6 +58,12 @@ namespace _Code.GameScene
             transform.DOScale(Vector3.zero, DESTROY_ANIMATION_DURATION).SetEase(Ease.OutCubic);
             await UniTask.Delay(TimeSpan.FromSeconds(DESTROY_ANIMATION_DURATION));
             Destroy(gameObject);
+        }
+
+        public void InitType(BallSOData ballType)
+        {
+            _spriteRenderer.color = ballType.Color;
+            _type = ballType;
         }
     }
 }

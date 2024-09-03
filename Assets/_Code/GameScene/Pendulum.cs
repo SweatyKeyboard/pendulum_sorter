@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace _Code.GameScene
 {
@@ -9,6 +10,7 @@ namespace _Code.GameScene
         [SerializeField] private Transform _centerOfMass;
         [SerializeField] private Transform _ballPosition;
         [SerializeField] private Ball _ballPrefab;
+        [SerializeField] private BallSOData[] _ballTypes;
 
         [Header("Animation settings")] 
         [SerializeField] [Range(0.1f, 10f)] private float _moveSpeed;
@@ -46,6 +48,7 @@ namespace _Code.GameScene
         {
             await UniTask.Delay(TimeSpan.FromSeconds(delayBeforeSpawn));
             var ball = Instantiate(_ballPrefab, _ballPosition.position, Quaternion.identity, _ballPosition);
+            ball.InitType(_ballTypes[Random.Range(0, _ballTypes.Length)]);
             _currentBall = ball;
         }
     }

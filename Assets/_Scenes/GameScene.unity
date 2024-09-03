@@ -212,6 +212,10 @@ MonoBehaviour:
   _centerOfMass: {fileID: 290967733}
   _ballPosition: {fileID: 1874480068}
   _ballPrefab: {fileID: 2305189089245061948, guid: 2dc07cceca6fa5c40b283fcc4f4dc436, type: 3}
+  _ballTypes:
+  - {fileID: 11400000, guid: 093737fec0532a0439eaa3bef13a60e9, type: 2}
+  - {fileID: 11400000, guid: 7fe1f5294590ba147afb44ec7fd04e54, type: 2}
+  - {fileID: 11400000, guid: f5908391141a856468c5d9dee810426c, type: 2}
   _moveSpeed: 3
   _moveAmplitude: 45
 --- !u!212 &290967735

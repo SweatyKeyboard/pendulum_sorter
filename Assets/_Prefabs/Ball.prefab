@@ -134,7 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9f42164610865a4f87ff1efef5b23ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Rigidbody>k__BackingField: {fileID: 8926758994037036959}
+  _rigidbody: {fileID: 8926758994037036959}
+  _spriteRenderer: {fileID: 5422830858810060229}
 --- !u!50 &8926758994037036959
 Rigidbody2D:
   serializedVersion: 4
