@@ -1,4 +1,5 @@
 using System;
+using _Code.Common;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -16,8 +17,6 @@ namespace _Code.FirstScene
         private float _lastPlayedTime;
         private Sequence _jumpSequence;
         
-        private const int GAME_SCENE_INDEX = 1;
-
         private void Update()
         {
             if (_lastPlayedTime + _jumpDelay < Time.time)
@@ -38,7 +37,7 @@ namespace _Code.FirstScene
 
         private async UniTaskVoid StartGameAsync()
         {
-            await SceneManager.LoadSceneAsync(GAME_SCENE_INDEX);
+            await SceneManager.LoadSceneAsync(PrefsKeys.GAME_SCENE_INDEX);
         }
     }
 }

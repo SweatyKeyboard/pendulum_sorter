@@ -15,8 +15,6 @@ namespace _Code.GameScene.Scoring
         private const int ROWS_COUNT = 3;
         private const int COLUMNS_COUNT = 3;
         private const float DELAY_BEFORE_CHECK = 0.5f;
-        private const int FINISH_SCENE_INDEX = 2;
-
         
         private Ball[,] _ballsMatrix = new Ball[COLUMNS_COUNT, ROWS_COUNT];
         
@@ -171,8 +169,9 @@ namespace _Code.GameScene.Scoring
             }
             
             PlayerPrefs.SetInt(PrefsKeys.LAST_SCORE_PREFS_KEY, Score);
+            PlayerPrefs.Save();
 
-            await SceneManager.LoadSceneAsync(FINISH_SCENE_INDEX);
+            await SceneManager.LoadSceneAsync(PrefsKeys.FINISH_SCENE_INDEX);
         }
     }
 }
