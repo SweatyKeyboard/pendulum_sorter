@@ -15,6 +15,7 @@ namespace _Code.GameScene
         [Header("Animation settings")] 
         [SerializeField] [Range(0.1f, 10f)] private float _moveSpeed;
         [SerializeField] [Range(10f, 90f)] private float _moveAmplitude;
+        [SerializeField] [Range(1f, 3f)] private float _respawnTime;
         
         private Ball _currentBall;
 
@@ -34,9 +35,9 @@ namespace _Code.GameScene
 
         private void ReleaseBall()
         {
-            _currentBall.ChangeState(EBallState.Released);
+            _currentBall.Release();
             _currentBall = null;
-            RespawnBall(1f).Forget();
+            RespawnBall(_respawnTime).Forget();
         }
 
         private void Start()

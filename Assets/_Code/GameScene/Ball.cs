@@ -3,7 +3,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Code.GameScene
 {
@@ -14,27 +13,13 @@ namespace _Code.GameScene
         private const float DESTROY_ANIMATION_DURATION = 0.2f;
         [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private ParticleSystem _particleSystem;
         
-        public EBallState State { get; private set; }
-
-        private BallSOData _type;
+        public BallSOData BallType { get; private set; }
         private CancellationTokenSource _cancellationToken = new();
+        private bool _isAlreadyDestroying;
 
-        public void ChangeState(EBallState state)
-        {
-            switch (state)
-            {
-                case EBallState.Released:
-                    Release();
-                    break;
-                
-                case EBallState.Sorted:
-                    
-                    break;
-            }
-        }
-
-        private void Release()
+        public void Release()
         {
             transform.parent = null;
             _rigidbody.bodyType = RigidbodyType2D.Dynamic;
@@ -53,8 +38,24 @@ namespace _Code.GameScene
             _cancellationToken = new CancellationTokenSource();
         }
 
-        private async UniTaskVoid SelfDestruction()
+        public async UniTaskVoid SelfDestruction()
         {
+            if (_isAlreadyDestroying)
+                return;
+
+            _particleSystem.gameObject.SetActive(true);
+            var startColor = BallType.Color;
+            var endColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
+
+            var colorOverLifetime = _particleSystem.colorOverLifetime;
+            var gradientColor = colorOverLifetime.color;
+            gradientColor.colorMin = startColor;
+            gradientColor.colorMax = endColor;
+            colorOverLifetime.color = gradientColor;
+            
+            _particleSystem.Play();
+            
+            _isAlreadyDestroying = true;
             transform.DOScale(Vector3.zero, DESTROY_ANIMATION_DURATION).SetEase(Ease.OutCubic);
             await UniTask.Delay(TimeSpan.FromSeconds(DESTROY_ANIMATION_DURATION));
             Destroy(gameObject);
@@ -63,7 +64,7 @@ namespace _Code.GameScene
         public void InitType(BallSOData ballType)
         {
             _spriteRenderer.color = ballType.Color;
-            _type = ballType;
+            BallType = ballType;
         }
     }
 }
